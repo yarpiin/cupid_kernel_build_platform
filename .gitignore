@@ -19,3 +19,7 @@
 # kernel directory
 #
 /device/
+
+exports.txt
+
+kernel_platform/build.config
