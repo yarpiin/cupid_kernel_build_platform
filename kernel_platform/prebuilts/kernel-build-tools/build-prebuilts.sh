@@ -43,6 +43,7 @@ EOF
         mkuserimg_mke2fs
         pahole
         simg2img
+        soong_zip
         swig
         tune2fs
         ufdt_apply_overlay

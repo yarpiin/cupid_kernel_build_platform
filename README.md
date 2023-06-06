@@ -1,1 +1,1 @@
-# kernel_xiaomi_sm8450_build_platform
+# kernel_xiaomi_cupid_build_platform
