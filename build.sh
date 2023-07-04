@@ -11,6 +11,7 @@ BUILD_DIR="kernel_platform"
 
 # Kernel repo dir
 KERNEL_DIR="msm-kernel"
+COMMON_DIR="common"
 
 # Functions
 
@@ -32,7 +33,10 @@ function clone_vendor_repo {
         echo "kernel directory exists..."
     else
         echo "Error: vendor directory does not exists... cloning xiaomeme kernel"
-        git clone https://github.com/yarpiin/kernel_xiaomi_sm8450_common.git -b sm8450 $KERNEL_DIR
+
+        git clone https://github.com/yarpiin/kernel_xiaomi_cupid.git -b cupid $KERNEL_DIR
+
+        git clone https://github.com/yarpiin/cupid_kernel_platform_common -b main $COMMON_DIR
     cd ..
     fi
 }
