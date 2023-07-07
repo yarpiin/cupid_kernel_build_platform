@@ -157,6 +157,7 @@ struct dsi_backlight_config {
 	u32 dimming_status;
 	bool user_disable_notification;
 	bool dimming_enabled;
+    u32 real_bl_level;
 
 	int en_gpio;
 	/* PWM params */
