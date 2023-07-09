@@ -23,6 +23,15 @@ function clean {
     rm -rf device/
     rm -rf out/
 
+	cd kernel_platform/msm-kernel
+	echo
+	make clean && make mrproper
+    cd ..
+	cd common
+	echo
+	make clean && make mrproper
+    cd ../..
+
 }
 
 function clone_vendor_repo {
