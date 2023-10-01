@@ -40,6 +40,7 @@
 
 
 static struct cam_tfe_hw_mgr g_tfe_hw_mgr;
+static uint32_t g_num_tfe_available, g_num_tfe_functional;
 
 static int cam_tfe_hw_mgr_event_handler(
 	void                                *priv,
@@ -422,6 +423,20 @@ static void cam_tfe_hw_mgr_deinit_hw(
 	}
 
 	ctx->init_done = false;
+}
+
+static inline void cam_tfe_mgr_count_functional_tfe(void)
+{
+	int i;
+
+	g_num_tfe_functional = 0;
+
+	for (i = 0; i < CAM_TFE_HW_NUM_MAX; i++) {
+		if (g_tfe_hw_mgr.tfe_devices[i])
+			g_num_tfe_functional++;
+	}
+
+	CAM_DBG(CAM_ISP, "counted %u functional TFEs", g_num_tfe_functional);
 }
 
 static int cam_tfe_hw_mgr_init_hw(
@@ -965,11 +980,14 @@ static int cam_tfe_hw_mgr_acquire_res_tfe_out_pixel(
 
 			tfe_out_res->hw_res[j] =
 				tfe_acquire.tfe_out.rsrc_node;
-			index = tfe_acquire.tfe_out.comp_grp_id;
-			comp_grp = &tfe_ctx->tfe_bus_comp_grp[index];
-			comp_grp->res_id[comp_grp->num_res] =
-				tfe_out_res->hw_res[j]->res_id;
-			comp_grp->num_res++;
+			if (j == CAM_ISP_HW_SPLIT_LEFT) {
+				index = tfe_acquire.tfe_out.comp_grp_id;
+				comp_grp = &tfe_ctx->tfe_bus_comp_grp[index];
+				comp_grp->res_id[comp_grp->num_res] =
+					tfe_out_res->hw_res[j]->res_id;
+				comp_grp->num_res++;
+			}
+
 			CAM_DBG(CAM_ISP, "resource type :0x%x res id:0x%x comp grp id:%d",
 				tfe_out_res->hw_res[j]->res_type,
 				tfe_out_res->hw_res[j]->res_id,
@@ -6373,6 +6391,14 @@ int cam_tfe_hw_mgr_init(struct cam_hw_mgr_intf *hw_mgr_intf, int *iommu_hdl)
 		*iommu_hdl = g_tfe_hw_mgr.mgr_common.img_iommu_hdl;
 
 	cam_tfe_hw_mgr_debug_register();
+	cam_tfe_mgr_count_functional_tfe();
+
+	cam_tfe_get_num_tfe_hws(&g_num_tfe_available);
+	rc = cam_cpas_prepare_subpart_info(CAM_IFE_HW_IDX, g_num_tfe_available,
+		g_num_tfe_functional);
+	if (rc)
+		CAM_ERR(CAM_ISP, "Failed to populate num_ifes, rc: %d", rc);
+
 	CAM_DBG(CAM_ISP, "Exit");
 
 	return 0;
