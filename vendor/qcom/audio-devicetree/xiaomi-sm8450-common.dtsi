@@ -112,7 +112,6 @@
 	qcom,msm-mbhc-hphl-swh = <0>;
 	qcom,msm-mbhc-gnd-swh = <0>;
 	qcom,wsa-max-devs = <0>;
-	qcom,upd_lpass_reg_addr = <0x418 0x33b0300>;
 };
 
 &spf_core_platform {
@@ -130,16 +129,6 @@
 
 &lpass_cdc {
 	qcom,num-macros = <3>;
-};
-
-&soc {
-	sbu_uart_en: msm_cdc_pinctrl@74 {
-		compatible = "qcom,msm-cdc-pinctrl";
-		pinctrl-names = "aud_active", "aud_sleep";
-		pinctrl-0 = <&sbu_uart_en_active_cup>;
-		pinctrl-1 = <&sbu_uart_en_idle_cup>;
-		#gpio-cells = <0>;
-	};
 };
 
 &wcd938x_codec {
