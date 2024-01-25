@@ -45,7 +45,7 @@ function clone_vendor_repo {
 
         git clone https://github.com/yarpiin/kernel_xiaomi_cupid.git -b cupid $KERNEL_DIR
 
-        git clone https://github.com/yarpiin/cupid_kernel_platform_common -b main $COMMON_DIR
+        git clone https://github.com/yarpiin/android_kernel_platform_common.git -b main $COMMON_DIR
     cd ..
     fi
 }
